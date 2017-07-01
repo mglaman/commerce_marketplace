@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies: {  }
+id: store_owner
+label: 'Store owner'
+weight: 4
+is_admin: null
+permissions:
+  - 'create online commerce_store'
+  - 'update own online commerce_store'
+  - 'view own commerce_store'

@@ -1,0 +1,10 @@
+name: Commerce Marketplace
+description: Adds capabilities for implementing a marketplace store.
+core: 8.x
+type: module
+dependencies:
+  - commerce:commerce_store
+
+config_devel:
+  install:
+    - user.role.store_owner

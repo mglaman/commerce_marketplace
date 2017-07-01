@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Provides procedural hooks for Commerce Marketplace.
+ */
+
+use Drupal\commerce_marketplace\StoreAccessControlHandler;
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function commerce_marketplace_entity_type_alter(array &$entity_types) {
+  /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
+  $entity_types['commerce_store']->setAccessClass(StoreAccessControlHandler::class);
+}
