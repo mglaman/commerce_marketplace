@@ -34,7 +34,7 @@ class StoreSelection extends DefaultSelection {
       return $query;
     }
     // Else make sure they can edit their own store (assumes one bundle.)
-    elseif ($this->currentUser->hasPermission('update own online commerce_store')) {
+    elseif ($this->currentUser->hasPermission('view own commerce_store')) {
       $query->condition('uid', $this->currentUser->id());
     }
     // No permissions, no stores.
