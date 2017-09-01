@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-id: store_owner
-label: 'Store owner'
+id: commerce_marketplace_store_owner
+label: 'Marketplace store owner'
 weight: 4
 is_admin: null
 permissions:
