@@ -7,4 +7,4 @@ dependencies:
 
 config_devel:
   install:
-    - user.role.store_owner
+    - user.role.commerce_marketplace_store_owner

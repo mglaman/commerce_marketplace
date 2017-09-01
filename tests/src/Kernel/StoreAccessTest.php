@@ -56,13 +56,13 @@ class StoreAccessTest extends CommerceKernelTestBase {
     $this->installEntitySchema('commerce_store');
     $this->installConfig(['commerce_store', 'commerce_marketplace']);
     $this->user1 = $this->createUser([
-      'roles' => ['store_owner'],
+      'roles' => ['commerce_marketplace_store_owner'],
     ]);
     $this->user2 = $this->createUser([
-      'roles' => ['store_owner'],
+      'roles' => ['commerce_marketplace_store_owner'],
     ]);;
     $this->user3 = $this->createUser([
-      'roles' => ['store_owner'],
+      'roles' => ['commerce_marketplace_store_owner'],
     ], ['view any commerce_store']);
   }
 
