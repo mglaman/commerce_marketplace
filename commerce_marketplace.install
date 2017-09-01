@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * @file
+ * Install and uninstall functions for the commerce_marketplace module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function commerce_marketplace_uninstall() {
+  // Make some clean up after ourselves.
+  if ($role = user_role_load('commerce_marketplace_store_owner')) {
+    $role->delete();
+  }
+}
