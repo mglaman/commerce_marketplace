@@ -6,6 +6,8 @@
  */
 
 use Drupal\commerce_marketplace\StoreAccessControlHandler;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 
 /**
  * Implements hook_entity_type_alter().
@@ -13,4 +15,54 @@ use Drupal\commerce_marketplace\StoreAccessControlHandler;
 function commerce_marketplace_entity_type_alter(array &$entity_types) {
   /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
   $entity_types['commerce_store']->setAccessClass(StoreAccessControlHandler::class);
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function commerce_marketplace_form_commerce_product_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $user = \Drupal::currentUser();
+  $entity_manager = \Drupal::entityManager();
+  $id = $user->id();
+  $store_owner = NULL;
+  if ($stores = $entity_manager->getStorage('commerce_store')) {
+    foreach ($stores->loadMultiple() as $store) {
+      if ($store->getOwnerId() == $id) {
+        $store_owner = TRUE;
+        break;
+      }
+    }
+  }
+
+  if (!$store_owner) {
+    $admin = $can_add = $user->hasPermission('administer commerce_store');
+    if (!$admin && $store_types = $entity_manager->getStorage('commerce_store_type')) {
+      foreach ($store_types->loadMultiple() as $store_type => $store) {
+        if ($can_add = $user->hasPermission("create {$store_type} commerce_store")) {
+          break;
+        }
+      }
+    }
+    else if (isset($store)) {
+      // Admin can add products to other people's stores even not being owner of
+      // a store. So, display a product form.
+      return;
+    }
+
+    if ($can_add) {
+      $link = Link::createFromRoute('Add a new store.', 'entity.commerce_store.add_page');
+      $markup = t("Products can't be created until a store has been added. @link", ['@link' => $link->toString()]);
+    }
+    else {
+      $markup = t("Oops! Seems the site administrator has granted for you a permission to create products but somehow forgotten about the permission to add your own store. Unfortunately, products can't be created until a store has been added.");
+    }
+    $form = [
+      '#tree' => FALSE,
+      '#array_parents' => [],
+      '#parents' => [],
+      'warning' => [
+        '#markup' => $markup,
+      ],
+    ];
+  }
 }
