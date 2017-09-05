@@ -6,6 +6,7 @@
  */
 
 use Drupal\commerce_marketplace\StoreAccessControlHandler;
+use Drupal\commerce_marketplace\MarketplaceStoreStorage;
 
 /**
  * Implements hook_entity_type_alter().
@@ -13,4 +14,5 @@ use Drupal\commerce_marketplace\StoreAccessControlHandler;
 function commerce_marketplace_entity_type_alter(array &$entity_types) {
   /** @var $entity_types \Drupal\Core\Entity\EntityTypeInterface[] */
   $entity_types['commerce_store']->setAccessClass(StoreAccessControlHandler::class);
+  $entity_types['commerce_store']->setStorageClass(MarketplaceStoreStorage::class);
 }
